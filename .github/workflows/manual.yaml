@@ -1,0 +1,32 @@
+name: Automated Editing
+
+on: 
+  workflow_dispatch:
+    inputs:
+      newVersion:
+        description: 'Provide new version number'     
+        required: true
+        default: '1.0'
+
+jobs:
+  mainJob:
+    name: Edit File
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2.3.2
+
+      - name: Modify the specific files using scripts
+        run: |
+          echo -n "${{ github.event.inputs.newVersion }}" > myFile.txt
+
+        |
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "your username"
+          git config --global user.email "your email"
+
+          git add -A
+          git commit -m "commit message"
+          git push
